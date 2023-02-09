@@ -1,0 +1,25 @@
+services:
+  stable-diffusion-webui:
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        USER: ${USER}
+        GROUP: ${USER}
+        UID: ${UID}
+        GID: ${GID}
+    container_name: stable-diffusion-webui
+    user: "${UID}:${GID}"
+    ports:
+      - 1024:1024
+    volumes:
+      - ./playground:/home/${USER}/playground
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    tty: true
+
